@@ -75,8 +75,9 @@ async function send(req, res) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    console.log("Headers: " + JSON.stringify(req.headers));
     try {
+        res.setHeader('Content-Type', 'application/json; charset=UTF-8');
+        res.setHeader('Transfer-Encoding', 'chunked');
         send(req, res);
     } catch (e) {
         res.statusCode = 400;
