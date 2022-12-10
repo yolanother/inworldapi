@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/d1f593c9-cf19-4f42-9874-0528fc4618c4/AppServices/subscriptions/d1f593c9-cf19-4f42-9874-0528fc4618c4/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/inworld-doubtech",
+    "appService.deploySubpath": "."
+}
