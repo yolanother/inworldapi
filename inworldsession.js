@@ -91,8 +91,13 @@ class InworldSession {
         return session;
     }
 
-    stopSession = function() {
+    disconnect = function() {
         this.connection.close();
+    }
+
+    endSession = function() {
+        this.connection.close();
+        delete global.sessions[this.session];
     }
 }
 async function startSession(req) {
@@ -100,7 +105,7 @@ async function startSession(req) {
     var session = undefined;
     if(request.session) {
         session = global.sessions[request.session];
-        log("Session resumed.")
+        if(session) log("Session resumed.")
     }
 
     if(!session) {
@@ -109,7 +114,24 @@ async function startSession(req) {
         global.sessions[session.session] = session;
     }
 
+    if(request.access.key !== session.access.key || request.access.secret !== session.access.secret) {
+        throw "Unauthorized";
+    }
+
     return session;
 }
 
+async function endSession(req) {
+    var request = parseRequest(req);
+    var session = undefined;
+    if(request.session) {
+        session = global.sessions[request.session];
+        if(session) {
+            session.connection.close();
+            delete global.sessions[request.session];
+        }
+    }
+}
+
 exports.startSession = startSession;
+exports.endSession = endSession;

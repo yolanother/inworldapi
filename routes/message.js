@@ -22,6 +22,7 @@ async function send(req, res) {
 
         const client = await startSession(req);
         client.setMessageCallback((msg) => {
+            msg.sessionId = client.session;
             if(msg.text) {
                 res.write(JSON.stringify(msg) + "\r\n");
                 log(msg.text);
@@ -30,6 +31,7 @@ async function send(req, res) {
             if(msg.isInteractionEnd()) {
                 res.end(JSON.stringify(msg));
                 client.connection.close();
+                if(query.endSession) client.endSession();
             }
         });
         await client.connection.sendText(query.m);
