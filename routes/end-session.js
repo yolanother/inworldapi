@@ -1,24 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-const inworld = require ('@inworld/nodejs-sdk')
-const status = inworld.status;
-const InworldClient = inworld.InworldClient;
-const InworldPacket = inworld.InworldPacket;
-
 const {endSession} =require ("../inworldsession");
-const {parseRequest, log, handleError} = require("../util");
+const {handleRequest} = require("../util");
+
+async function send(req, res) {
+    await endSession(req);
+    res.end();
+}
+
+async function onRequest(req, res, next) {
+    await handleRequest(req, res, send);
+}
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-    try {
-        res.setHeader('Content-Type', 'application/json; charset=UTF-8');
-        res.setHeader('Transfer-Encoding', 'chunked');
-        endSession(req);
-        res.end();
-    } catch (e) {
-        handleError(res, e);
-    }
-});
+router.get('/', onRequest);
+router.options('/', onRequest);
+router.post('/', onRequest);
 
 module.exports = router;

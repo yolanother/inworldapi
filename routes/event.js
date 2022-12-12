@@ -33,7 +33,7 @@ async function send(req, res) {
             if(query.endSession) client.endSession();
         }
     });
-    await client.connection.sendText(query.m);
+    await client.connection.sendCustom(query.e);
 }
 
 async function onRequest(req, res, next) {

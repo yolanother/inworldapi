@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var messageRouter = require('./routes/message');
+var eventRouter = require('./routes/event');
 var startSessionRouter = require('./routes/start-session');
 var endSessionRouter = require('./routes/end-session');
 
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/message', messageRouter);
+app.use('/event', eventRouter);
 app.use('/start-session', startSessionRouter);
 app.use('/end-session', endSessionRouter);
 
